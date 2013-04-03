@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: at.zeha.netbeans.cliglue
+OpenIDE-Module-Localizing-Bundle: at/zeha/netbeans/cliglue/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
