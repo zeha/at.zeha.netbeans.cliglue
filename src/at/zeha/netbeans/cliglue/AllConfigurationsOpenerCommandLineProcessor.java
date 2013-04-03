@@ -54,42 +54,50 @@ public class AllConfigurationsOpenerCommandLineProcessor extends OptionProcessor
 
                         OpenProjects OpenProjectsInstance = OpenProjects.getDefault();
 
-                        Project[] currentOpenProjects = OpenProjectsInstance.openProjects().get();
+                        logger.setLevel(Level.ALL);
 
-                        logger.log(Level.ALL, "Closing existing projects...");
-                        OpenProjectsInstance.close(currentOpenProjects);
+                        logger.log(Level.INFO, "Closing existing projects...");
+                        OpenProjectsInstance.close(OpenProjectsInstance.openProjects().get());
                         // wait for close to complete
-                        currentOpenProjects = OpenProjectsInstance.openProjects().get();
+                        OpenProjectsInstance.openProjects().get();
+                        Thread.sleep(500);
 
-                        logger.log(Level.ALL, "Opening project...");
+                        logger.log(Level.INFO, "Opening project...");
                         OpenProjectsInstance.open(array, false);
                         // wait for open to complete
-                        currentOpenProjects = OpenProjectsInstance.openProjects().get();
+                        OpenProjectsInstance.openProjects().get();
+                        Thread.sleep(500);
 
-                        project = currentOpenProjects[0];
+                        project = OpenProjectsInstance.openProjects().get()[0];
                         ProjectConfigurationProvider configProvider = project.getLookup().lookup(ProjectConfigurationProvider.class);
                         Collection<ProjectConfiguration> configurations = configProvider.getConfigurations();
                         for (Object c : configurations.toArray()) {
-                            logger.log(Level.ALL, "Activating configuration \"" + ((ProjectConfiguration) c).getDisplayName() + "\" ...");
+                            logger.log(Level.INFO, "Activating configuration \"" + ((ProjectConfiguration) c).getDisplayName() + "\" ...");
                             configProvider.setActiveConfiguration((ProjectConfiguration) c);
+                            Thread.sleep(500);
                         }
 
-                        logger.log(Level.ALL, "Closing opened projects...");
-                        OpenProjectsInstance.close(currentOpenProjects);
+                        logger.log(Level.INFO, "Closing opened projects...");
+                        Thread.sleep(500);
+                        OpenProjectsInstance.close(OpenProjectsInstance.openProjects().get());
                         // wait for close to complete
-                        currentOpenProjects = OpenProjectsInstance.openProjects().get();
+                        OpenProjectsInstance.openProjects().get();
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
-                        logger.log(Level.ALL, ex.getStackTrace().toString());
+                        logger.log(Level.SEVERE, ex.getStackTrace().toString());
                     } catch (ExecutionException ex) {
                         ex.printStackTrace();
-                        logger.log(Level.ALL, ex.getStackTrace().toString());
+                        logger.log(Level.SEVERE, ex.getStackTrace().toString());
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                        logger.log(Level.ALL, ex.getStackTrace().toString());
+                        logger.log(Level.SEVERE, ex.getStackTrace().toString());
+                    } catch (Exception ex) {
+                        // catch all exceptions here so IDE shutdown works anyway.
+                        ex.printStackTrace();
+                        logger.log(Level.SEVERE, ex.getStackTrace().toString());
                     }
 
-                    logger.log(Level.ALL, "Shutting down.");
+                    logger.log(Level.INFO, "Shutting down.");
                     LifecycleManager.getDefault().exit();
                 }
             });
