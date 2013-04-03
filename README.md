@@ -22,7 +22,7 @@ Install this plugin, run netbeans --openallconfigs /full/path/to/project.
 NetBeans will open the specified project, activate all configurations,
 and quit.
 
-PS: Also works with MPLAB X (which is a NetBeans CND fork).
+PS: Also works with MPLAB X.
 
 
 Download: https://github.com/zeha/at.zeha.netbeans.cliglue/raw/dist/at-zeha-netbeans-cliglue.nbm
